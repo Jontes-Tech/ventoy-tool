@@ -17,14 +17,22 @@ if [[ -z "$MY_PATH" ]] ; then
     exit 1  # fail
 fi
 
-script_checksum=sha512sum "$MY_PATH/$0" | awk '{ print $1 }'
+script_checksum=$(sha512sum "$MY_PATH/$0" | awk '{ print $1 }')
+script_github_checksum=$(curl -fsSL https://raw.githubusercontent.com/Jontes-Tech/ventoy-tool/master/linux.sha512)
 
-echo $script_checksum
+echo "Script checksum: $script_checksum"
+echo "Github checksum: $script_github_checksum"
 
-if [ $script_checksum == curl -fsSL https://raw.githubusercontent.com/Jontes-Tech/ventoy-tool/master/linux.sha512 ]; then
+if [ $script_checksum == $script_github_checksum ]; then
     echo "Checksum matched"
 else
     echo "Checksum did not match"
+    if [ $svcc == "true" ]; then
+        echo "Skipping checksum check"
+    else
+        echo 'Checksum did not match. Set the $svcc variable to "true" to skip this check.'
+        exit 1
+    fi
     exit 1
 fi
 
