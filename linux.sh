@@ -17,7 +17,9 @@ if [[ -z "$MY_PATH" ]] ; then
     exit 1  # fail
 fi
 
-if [ sha512sum "$MY_PATH/$0" | awk '{ print $1 }' == curl -fsSL https://raw.githubusercontent.com/Jontes-Tech/ventoy-tool/master/linux.sha512 ]; then
+script_checksum=sha512sum "$MY_PATH/$0" | awk '{ print $1 }'
+
+if [ $script_checksum == curl -fsSL https://raw.githubusercontent.com/Jontes-Tech/ventoy-tool/master/linux.sha512 ]; then
     echo "Checksum matched"
 else
     echo "Checksum did not match"
