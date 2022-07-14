@@ -1,1 +1,1 @@
-`curl -S https://jont.tk/ventoytool | bash`
+`curl -fsSL https://jont.tk/ventoytool | bash`
