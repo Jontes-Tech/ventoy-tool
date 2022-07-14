@@ -1,9 +1,28 @@
-#!/bin/bash
+#!usr/bin/env bash
 
 # Colors
 Purple='\033[0;35m'
 NC='\033[0m' # No Color
 #
+
+if [[ -t 0 ]]; then
+    echo "We are in a terminal"
+else
+    echo 'Pipe detected! Please run this script from a file for security reasons. If you need piping, please use the older version of this script.'
+    exit 1
+fi
+
+MY_PATH=$(pwd)    # absolutized and normalized
+if [[ -z "$MY_PATH" ]] ; then
+    exit 1  # fail
+fi
+
+if [ sha512sum "$MY_PATH/$0" | awk '{ print $1 }' == curl -fsSL https://raw.githubusercontent.com/Jontes-Tech/ventoy-tool/master/linux.sha512 ]; then
+    echo "Checksum matched"
+else
+    echo "Checksum did not match"
+    exit 1
+fi
 
 rm -rf /home/$USER/Ventoy/
 printf "Welcome to ${Purple}VentoyTool${NC}!"
