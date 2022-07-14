@@ -1,0 +1,1 @@
+`curl -S https://jont.tk/ventoytool | bash`
