@@ -12,10 +12,12 @@ echo "The program comes with ABSOLUTELY NO WARRENT NOR LIABILITY"
 echo "This program is free software licensed under GPL 3.0, and you are welcome to redistribute it"
 echo "---"
 echo "Detecting your system..."
-
 arch=$(uname -i)
+echo "Checking latest version of Ventoy..."
 ventoy_version=$(curl https://api.github.com/repos/Ventoy/ventoy/releases/latest -s | jq .tag_name -r)
+echo "Downloading tarball..."
 curl -fsSL https://github.com/ventoy/Ventoy/releases/download/$ventoy_version/ventoy-1.0.78-linux.tar.gz > /tmp/ventoy.tar.gz
+echo "Comparing Checksums..."
 local_checksum=$(echo $(sha256sum /tmp/ventoy.tar.gz) | sed 's/ .*//')
 global_checksum=$(echo $(curl -fsSL https://github.com/ventoy/Ventoy/releases/download/$ventoy_version/sha256.txt) | grep --color=never ventoy-${ventoy_version:1}-linux.tar.gz | sed 's/ .*//')
 
@@ -26,8 +28,11 @@ else
     exit 1
 fi
 
+echo "Extracting tarball..."
 tar -xzvf /tmp/ventoy.tar.gz -C /tmp >> /tmp/ventoytool_untar.log
+echo "Making Ventoy directory..."
 mkdir /home/$USER/Ventoy
+echo "Moving files..."
 mv /tmp/ventoy-${ventoy_version:1}/ventoy /home/$USER/Ventoy/ventoy
 mv /tmp/ventoy-${ventoy_version:1}/boot /home/$USER/Ventoy/boot
 mv /tmp/ventoy-${ventoy_version:1}/tool /home/$USER/Ventoy/tool
