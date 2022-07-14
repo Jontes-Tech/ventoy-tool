@@ -19,6 +19,8 @@ fi
 
 script_checksum=sha512sum "$MY_PATH/$0" | awk '{ print $1 }'
 
+echo $script_checksum
+
 if [ $script_checksum == curl -fsSL https://raw.githubusercontent.com/Jontes-Tech/ventoy-tool/master/linux.sha512 ]; then
     echo "Checksum matched"
 else
