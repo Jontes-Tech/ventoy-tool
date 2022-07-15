@@ -21,8 +21,9 @@ MY_PATH=$(pwd)
 if [[ -z "$MY_PATH" ]] ; then
     exit 1  # fail
 fi
+echo "We are located in the directory $MY_PATH"
 
-script_checksum=$(sha512sum "$MY_PATH/$0" | awk '{ print $1 }')
+script_checksum=$(sha512sum "$0" | awk '{ print $1 }')
 script_github_checksum=$(curl -fsSL https://raw.githubusercontent.com/Jontes-Tech/ventoy-tool/master/linux.sha512)
 
 echo "Script checksum: $script_checksum"
@@ -38,7 +39,6 @@ else
         echo 'Checksum did not match. Set the $svcc variable to "true" to skip this check.'
         exit 1
     fi
-    exit 1
 fi
 
 rm -rf /home/$USER/Ventoy/
@@ -67,9 +67,7 @@ fi
 echo "Extracting tarball..."
 tar -xzvf /tmp/ventoy.tar.gz -C /tmp >>/tmp/ventoytool_untar.log
 echo "Making Ventoy directory..."
-mkdir /home/$USER/Ventoyrm -rf /tmp/ventoy.tar.gz
-rm -rf /tmp/ventoy-${ventoy_version:1}
-rm -f /tmp/ventoytool_untar.log
+mkdir /home/$USER/Ventoy
 echo "Moving files..."
 mv /tmp/ventoy-${ventoy_version:1}/ventoy /home/$USER/Ventoy/ventoy
 mv /tmp/ventoy-${ventoy_version:1}/boot /home/$USER/Ventoy/boot
